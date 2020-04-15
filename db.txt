@@ -1,0 +1,68 @@
+drop database young;
+create database young default character set utf8 collate utf8_general_ci;
+use young;
+create table person (
+    mem_no int(11) not null,
+    id varchar(30) not null,
+    pw varchar(30) not null,
+    name varchar(20) not null,
+    location varchar(20) not null,
+
+    primary key(mem_no)
+) ENGINE=InnoDB default character set utf8 collate utf8_general_ci;
+
+create table post (
+    number int(11) not null auto_increment,
+    post_no int(11) not null,
+    post_title varchar(50) not null,
+    date varchar(30) not null,
+    visit int(11) not null,
+    context varchar(500) not null,
+
+    primary key(number),
+    foreign key(post_no) REFERENCES person(mem_no) ON DELETE CASCADE ON UPDATE CASCADE
+
+) ENGINE=InnoDB default character set utf8 collate utf8_general_ci;
+
+create table comm (
+    number int(11) not null,
+    comm_no int(11) not null,
+    date varchar(30) not null,
+    comment varchar(100) not null,
+
+    foreign key(number) REFERENCES post(number) ON DELETE CASCADE ON UPDATE CASCADE,
+    foreign key(comm_no) REFERENCES person(mem_no) ON DELETE CASCADE ON UPDATE CASCADE
+
+) ENGINE=InnoDB default character set utf8 collate utf8_general_ci;
+set names euckr;
+
+insert into person values (20140238, "blue00420", SHA("1234"), "김영우", "학교 앞");
+insert into person values (20141238, "blue", SHA("1234"), "바보", "옥계");
+
+select * from person;
+
+insert into post values (null, 20141238, "pc방b", "2018.06.13 10:12", 0, "쨈나피시방");
+insert into post values (null, 20141238, "pc방b", "2018.06.13 10:12", 0, "쨈나피시방");
+insert into post values (null, 20140238, "pc방a", "2018.06.13 10:13", 0, "쨈나피");
+insert into post values (null, 20140238, "pc방a", "2018.06.13 10:13", 0, "쨈나피");
+
+select * from post;
+
+insert into comm values (1, 20140238, "2018.06.13 10:13", "맞아용맞아용맞아");
+insert into comm values (1, 20140238, "2018.06.13 10:13", "맞아용맞아용맞아");
+insert into comm values (3, 20141238, "2018.06.13 10:14", "맞아용맞아용맞아");
+
+select * from comm;
+
+
+select * from person;
+select * from post;
+select * from comm;
+
+//////////
+
+
+select * from unit, control, pilot where unit.id=control.uid and pilot.id=control.pid;
+select * from unit join control on(unit.id=control.uid) join pilot on(pilot.id=control.pid);
+select unit.name as "unit name", pilot.name as "pilot name", movie from unit, control, pilot where unit.id=control.uid and pilot.id=control.pid;
+
